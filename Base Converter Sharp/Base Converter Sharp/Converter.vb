@@ -81,10 +81,12 @@
 
     Public Shared Function ToValue(Character As Char) As Byte
         Select Case Character
-            Case "0" To "9"
+            Case "0"c To "9"c
                 Return AscW(Character)
-            Case "A" To "Z"
-                Return AscW(Character) - AscW("A"c) + 10
+            Case "A"c To "Z"c, "a"c To "z"c
+                Return AscW(Character) - AscW("A"c) + If(Char.IsLower(Character), 10, 36)
+            Case Else
+                Throw New ArgumentOutOfRangeException("Character", "Character must be either 0 to 9, a to z or A to Z.")
         End Select
     End Function
 
@@ -100,14 +102,14 @@
     End Sub
 
     Private Sub InputBase_SelectedIndexChanged(sender As Object, e As EventArgs) Handles InputBase.SelectedIndexChanged
-
+        UpdateOutput()
     End Sub
 
     Private Sub Input_TextChanged(sender As Object, e As EventArgs) Handles Input.TextChanged
-
+        UpdateOutput()
     End Sub
 
     Private Sub OutputBase_SelectedIndexChanged(sender As Object, e As EventArgs) Handles OutputBase.SelectedIndexChanged
-
+        UpdateOutput()
     End Sub
 End Class
